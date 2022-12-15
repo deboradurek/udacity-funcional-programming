@@ -1,18 +1,35 @@
-// Directions: Rewrite the imperative code below as Object-Oriented
+// Rewriten the original imperative code as Object-Oriented
 
-let status = 'active';
-let warp = 2;
-let type = 'Dilithium Crystal';
-let status_report = 'Captain, ';
-
-if (status === 'active' && warp <= 4) {
-  status_report += 'the engines are active and we could be going faster.';
-} else if (status === 'active' && warp > 4) {
-  status_report += 'the engines are active and we are going ' + warp + '.';
-} else if (status === 'down') {
-  status_report += 'the engines are down.';
-} else {
-  status_report += 'the comms are down and we can`t reach engineering.';
+function StatusReport(name) {
+  (this.name = name ? name : 'Captain'),
+    (this.type = 'Dilithium Chrystal'),
+    (this.status = 'active'),
+    (this.warp = 2),
+    (this.generateStatusReport = function () {
+      if (this.status === 'active' && this.warp <= 4) {
+        return `${this.name}, the engines are active and we could be going faster.`;
+      } else if (this.status === 'active' && this.warp > 4) {
+        return `${this.name}, the engines are active and we are going ${this.warp}.`;
+      } else if (this.status === 'down') {
+        return `${this.name}, the engines are down.`;
+      } else {
+        return `${this.name}, the comms are down and we can't reach engineering.`;
+      }
+    });
+  this.setStatus = function (status) {
+    this.status = status;
+  };
+  this.setWarp = function (warp) {
+    this.warp = warp;
+  };
 }
 
-console.log(status_report);
+const statusReportCheck = new StatusReport();
+
+console.log(statusReportCheck.generateStatusReport());
+
+statusReportCheck.setStatus('inactive');
+console.log(statusReportCheck.status);
+
+statusReportCheck.setWarp(5);
+console.log(statusReportCheck.warp);
