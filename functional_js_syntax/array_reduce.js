@@ -1,35 +1,44 @@
 // 1. Take this disjointed sentence and turn it into a single string
-const text = ['The ships', 'hung in the sky,', 'much the way', 'that bricks don`t']
+const text = [
+  'The ships',
+  'hung in the sky,',
+  'much the way',
+  'that bricks don`t',
+];
 
-// Your Code Here
+const sentence = text.reduce((acc, words) => `${acc} ${words}`);
 
-// expected output: "The ships hung in the sky, much the way that bricks don't"
+console.log(sentence);
+// The ships hung in the sky, much the way that bricks don`t
 
 // ----------------------------------------------------------
 
 // 2. Return the winning team
 const scores = [
-    {
-        team: 'A',
-        score: 20
-    },
-    {
-        team: 'B',
-        score: 17
-    },
-    {
-        team: 'C',
-        score: 23
-    },
-    {
-        team: 'D',
-        score: 13
-    }
-]
+  {
+    team: 'A',
+    score: 20,
+  },
+  {
+    team: 'B',
+    score: 17,
+  },
+  {
+    team: 'C',
+    score: 23,
+  },
+  {
+    team: 'D',
+    score: 13,
+  },
+];
 
-// Your Code Here
+const maxScore = scores.reduce((prev, curr) =>
+  prev.score > curr.score ? prev : curr,
+).team;
 
-// expected output: "C"
+console.log(maxScore);
+// C
 
 // ----------------------------------------------------------
 //    REAL LIFE EXAMPLE
@@ -39,24 +48,29 @@ const scores = [
 // star ship
 
 const ships = [
-    {
-        name: 'Serenity',
-        speed: '4.2G',
-    },
-    {
-        name: 'Cylon Raider',
-        speed: '7.5G',
-    },
-    {
-        name: 'Swordfish II',
-        speed: '50G',
-    },
-    {
-        name: 'Tie Fighters',
-        speed: '4100G',
-    }
-]
+  {
+    name: 'Serenity',
+    speed: '4.2G',
+  },
+  {
+    name: 'Cylon Raider',
+    speed: '7.5G',
+  },
+  {
+    name: 'Swordfish II',
+    speed: '50G',
+  },
+  {
+    name: 'Tie Fighters',
+    speed: '4100G',
+  },
+];
 
-// Your Code Here
+const fastestStarShip = ships.reduce((prev, curr) => {
+  const speedToNumber = Number(curr.speed.slice(0, -1));
+  curr.speed = speedToNumber;
+  return prev.speed > curr.speed ? prev : curr;
+}).name;
 
-// Expected output: Tie Fighters
+console.log(fastestStarShip);
+// Tie Fighters
