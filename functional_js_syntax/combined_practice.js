@@ -133,6 +133,14 @@ const charactersByUniverseObject = characters.reduce((acc, curr) => {
   return acc;
 }, {});
 
+// Another way:
+
+// const charactersByUniverseObject = characters.reduce((acc, curr) => {
+//   acc[curr.universe] = acc[curr.universe] === undefined ? [] : acc[curr.universe]
+//   acc[curr.universe].push(curr)
+//   return acc;
+// }, {});
+
 const charactersByUniverse = Object.values(charactersByUniverseObject);
 
 console.log(charactersByUniverse);
