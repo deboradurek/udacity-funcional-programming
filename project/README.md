@@ -21,6 +21,12 @@ The goal of this project is to provide practice with:
 
 ## Getting Started
 
+- Create an API key through NASA’s API.
+
+- Create a `.env` file under `project` folder
+
+- Place the Api Key in the `.env` file (`API_KEY=YOUR_API_KEY`)
+
 - Install the dependecies: `yarn install`
 
 - Run `yarn start`
