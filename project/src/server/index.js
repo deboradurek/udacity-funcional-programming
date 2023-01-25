@@ -5,6 +5,8 @@ const fetch = require('node-fetch');
 const path = require('path');
 const Immutable = require('immutable');
 
+const logError = (message) => console.log('\x1b[41m%s\x1b[0m', `Error: ${message}`);
+
 const app = express();
 const port = 3000;
 
@@ -14,6 +16,12 @@ app.use(bodyParser.json());
 app.use('/', express.static(path.join(__dirname, '../public')));
 
 const request = async (path, params) => {
+  if (!process.env.API_KEY) {
+    throw new Error(
+      'API_KEY is missing, please, create a .env file and place your generate key there'
+    );
+  }
+  console.log(process.env.API_KEY);
   const urlParams = new URLSearchParams({
     api_key: process.env.API_KEY,
     ...params,
@@ -46,7 +54,7 @@ app.get('/rovers', async (_req, res) => {
 
     res.send(result);
   } catch (err) {
-    console.log('error:', err);
+    logError(err.message);
   }
 });
 
@@ -56,7 +64,7 @@ app.get('/apod', async (_req, res) => {
     const image = await request('planetary/apod');
     res.send({ image });
   } catch (err) {
-    console.log('error:', err);
+    logError(err.message);
   }
 });
 
