@@ -21,7 +21,7 @@ const request = async (path, params) => {
       'API_KEY is missing, please, create a .env file and place your generate key there'
     );
   }
-  console.log(process.env.API_KEY);
+
   const urlParams = new URLSearchParams({
     api_key: process.env.API_KEY,
     ...params,

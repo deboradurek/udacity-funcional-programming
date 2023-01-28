@@ -4,17 +4,32 @@ Object.defineProperty(Array.prototype, 'mapComp', {
   },
 });
 
+// Store object and helpers
 let store = {
   rovers: undefined,
 };
 
-// add our markup to the page
-const root = document.getElementById('root');
-
-const updateStore = (store, newState) => {
+const updateStore = (newState) => {
   store = Object.assign(store, newState);
   render(root);
 };
+
+const withStore = (component) => (selectors) => {
+  return (props) => {
+    const storeResult = Object.entries(selectors).reduce(
+      (acc, [key, callbackFn]) => ({
+        ...acc,
+        [key]: callbackFn(store),
+      }),
+      {}
+    );
+
+    return component({ ...props, ...storeResult });
+  };
+};
+
+// add our markup to the page
+const root = document.getElementById('root');
 
 const render = async (root) => {
   root.innerHTML = App();
@@ -37,7 +52,7 @@ const App = () => {
 
 // listening for load event because page should load before any JS is called
 window.addEventListener('load', () => {
-  render(root, store);
+  render(root);
 });
 // ------------------------------------------------------  COMPONENTS
 const RoverImage = ({ photo, index, total }) => {
@@ -134,8 +149,7 @@ const RoversPlaceholder = () => {
   `;
 };
 
-const RoversTabs = () => {
-  const { rovers } = store;
+const _RoversTabs = ({ rovers }) => {
   if (!rovers) {
     getRovers();
     return RoversPlaceholder();
@@ -150,6 +164,8 @@ const RoversTabs = () => {
 
   return Tabs({ id: 'rovers', tabs });
 };
+
+const RoversTabs = withStore(_RoversTabs)({ rovers: (state) => state.rovers });
 
 // ------------------------------------------------------  REUSABLE COMPONENTS
 const CarouselItem = ({ content, isActive }) => {
@@ -223,5 +239,5 @@ const Tabs = ({ id, tabs }) => {
 const getRovers = () => {
   fetch(`http://localhost:3000/rovers`)
     .then((res) => res.json())
-    .then((rovers) => updateStore(store, { rovers }));
+    .then((rovers) => updateStore({ rovers }));
 };
