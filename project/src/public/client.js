@@ -5,24 +5,20 @@ Object.defineProperty(Array.prototype, 'mapComp', {
 });
 
 // Store object and helpers
-let store = {
+let store = Immutable.Map({
   rovers: undefined,
-};
+});
 
 const updateStore = (newState) => {
-  store = Object.assign(store, newState);
+  store = store.merge(newState);
   render(root);
 };
 
 const withStore = (component) => (selectors) => {
   return (props) => {
-    const storeResult = Object.entries(selectors).reduce(
-      (acc, [key, callbackFn]) => ({
-        ...acc,
-        [key]: callbackFn(store),
-      }),
-      {}
-    );
+    const storeResult = Immutable.Map(
+      Object.entries(selectors).map(([key, callbackFn]) => [key, callbackFn(store)])
+    ).toObject();
 
     return component({ ...props, ...storeResult });
   };
@@ -165,7 +161,7 @@ const _RoversTabs = ({ rovers }) => {
   return Tabs({ id: 'rovers', tabs });
 };
 
-const RoversTabs = withStore(_RoversTabs)({ rovers: (state) => state.rovers });
+const RoversTabs = withStore(_RoversTabs)({ rovers: (state) => state.get('rovers') });
 
 // ------------------------------------------------------  REUSABLE COMPONENTS
 const CarouselItem = ({ content, isActive }) => {

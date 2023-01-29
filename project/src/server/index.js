@@ -13,6 +13,7 @@ const port = 3000;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+app.use(express.static('node_modules'));
 app.use('/', express.static(path.join(__dirname, '../public')));
 
 const request = async (path, params) => {
@@ -29,7 +30,7 @@ const request = async (path, params) => {
   return fetch(`https://api.nasa.gov/${path}?${urlParams}`).then((res) => res.json());
 };
 
-const getRovers = () => request(`mars-photos/api/v1/rovers`);
+const getRovers = () => request('mars-photos/api/v1/rovers');
 
 const getRoverInfo = (roverName, date) =>
   request(`mars-photos/api/v1/rovers/${roverName.toLowerCase()}/photos`, {
